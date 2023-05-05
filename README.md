@@ -7,10 +7,10 @@ If we use Streams, other classes(CacheService, AuthenticationProvider, etc) can 
 
 ## Code Review
 
-**MyAuth** class is our core class. When we can call **login** or **logout** functions, it will add a new data event to the stream and listeners will receive it
-**AuthenticationProvier** and **CacheService** listen the stream
+**MyAuth** class is our core class. When we can call **login** or **logout** functions, it will add a new data event to the stream and listeners will receive it.
+**AuthenticationProvier** and **CacheService** listen the stream.
 
-**MyAuth** class has a StreamController and login,logout functions.
+**MyAuth** class has a StreamController and login,logout functions. We use Singleton design pattern because we can have multiple subscribers and they all MUST listen the same stream.
 ```
 class MyAuth {
   MyAuth._();
@@ -34,7 +34,7 @@ class MyAuth {
 }
 ```
 
-**AuthenticationProvier** subscribe to the stream. Don't forget to cancel subscription when you are done.
+**AuthenticationProvider** subscribes to the stream. Don't forget to cancel subscription when you are done.
 ```
 class AuthenticationProvier {
   StreamSubscription<UserModel?>? subscription;
@@ -54,7 +54,7 @@ class AuthenticationProvier {
 }
 ```
 
-**CacheService** subscribe to the stream. Don't forget to cancel subscription when you are done.
+**CacheService** subscribes to the stream. Don't forget to cancel subscription when you are done.
 ```
 class CacheService {
   StreamSubscription<UserModel?>? subscription;
@@ -93,7 +93,7 @@ void main(List<String> args) async {
 }
 ```
 
-The resul will be
+The result will be
 ```
 User logged in -> Instance of 'UserModel'
 Cached user data -> Instance of 'UserModel'
